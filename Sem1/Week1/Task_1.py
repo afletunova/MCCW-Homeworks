@@ -15,7 +15,7 @@ def f_der(x):
 
 bound_A = -8
 bound_B = 2
-epsilon = 10 ** (-5)
+epsilon = 10 ** (-7)
 
 print("A = ", bound_A, "; B = ", bound_B)
 print("f(x) = 10 * cos(x) - 0.1 * x ^ 2")
@@ -39,7 +39,7 @@ while x_2 <= bound_B:
 
     x_1 = x_2
     x_2 = x_1 + h
-
+print("Number of roots: ", counter)
 
 # Bisection method
 print("Bisection method")
