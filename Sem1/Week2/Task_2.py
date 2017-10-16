@@ -4,20 +4,12 @@ from operator import itemgetter
 def f(x):
     return math.exp(x) - x ** 2 / 2
 
+
 a = 0
 b = 1
 #n = 7
 m = 15
 #y = 0.65
-
-print('Input n <= ', m, 'n > 0:')
-n = int(input())
-while n > m or n <= 0:
-    print('Input n <= ', m, 'n > 0:')
-    n = int(input())
-
-print('[ a , b ] = [', a, ',', b,'] Input x:')
-y = float(input())
 
 points_values = []
 
@@ -25,6 +17,18 @@ for i in range(0, m + 1):
     x = a + i * (b - a) / m
     points_values.append((x, f(x)))
     print('x = ', x, ', f(x) = ', f(x))
+
+print('Input n <=', m, 'n > 0:')
+n = int(input())
+while n > m or n <= 0:
+    print('Input n <=', m, 'n > 0:')
+    n = int(input())
+
+print('[ a , b ] = [', a, ',', b,'] Input x:')
+y = float(input())
+while y < a or y > b:
+    print('[ a , b ] = [', a, ',', b, '] Input x:')
+    y = float(input())
 
 point_dist = []
 
@@ -62,7 +66,7 @@ for i in range(1, n + 1):
         tail *= (y - points[j])
     P_n_x += tail
 
-print('P_n_x =', P_n_x)
+print('P_n(x) =', P_n_x)
 
 print('ef_n(x) = ', abs(f(y) - P_n_x))
 
@@ -80,6 +84,6 @@ for i in range(0, n + 1):
             denominator *= points[i] - points[j]
     LP_n_x += ((numerator / denominator) * f_points[i])
 
-print('P_n_x =', LP_n_x)
+print('P_n(x) =', LP_n_x)
 
 print('ef_n(x) = ', abs(f(y) - LP_n_x))
