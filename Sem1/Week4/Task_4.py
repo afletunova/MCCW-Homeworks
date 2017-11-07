@@ -67,9 +67,6 @@ for i in range(0, m + 1):
     f_points.append(f(x))
     print('x = ', x, ', f(x) = ', f(x))
 
-#First method
-print('First method')
-
 f_min = min(f(a), f(b))
 total_min = min(f(a), f(b))
 f_max = max(f(a), f(b))
@@ -106,6 +103,8 @@ while choice not in [1,2]:
         choice = 2
 
 if choice == 1:
+    # First method
+    print('First method')
     point_dist = []
 
     for i in range(0, m + 1):
@@ -122,10 +121,6 @@ if choice == 1:
                         (split_diff_table[0][j + i - 1] - split_diff_table[0][j]))
         split_diff_table.append(row)
 
-    for i in range(0, n):
-        print(f_points[i], f_inv_points[i])
-
-
     Q_n_f = split_diff_table[1][0]
     for i in range(1, n + 1):
         tail = split_diff_table[1 + i][0]
@@ -136,9 +131,11 @@ if choice == 1:
     print('Q_n(f) = x = ', Q_n_f)
     print('|f(x) - F| = ', abs(f(Q_n_f) - f_v))
 elif choice == 2:
+    # Second method
+    print('Second method')
     x_1 = a
     x_2 = x_1 + h
-    epsilon = 10 ** (-8)
+    epsilon = 10 ** (-12)
 
     intervals = []
 
@@ -160,30 +157,39 @@ elif choice == 2:
         print('Root = ', c)
     print('r_n(x) = |f(x) - F| =', abs(f(c) - f_v))
 
-#Numerical differentiation
-first_der_f = []
-for i in range(0, m + 1):
-    if i == 0:
-        first_der_f.append((f_points[i + 1] - f_points[i]) / h)
-    elif i == m:
-        first_der_f.append((f_points[i] - f_points[i - 1]) / h)
-    elif i == 1 or i == (m - 1):
-        first_der_f.append((f_points[i + 1] - f_points[i - 1]) / (2 * h))
-    elif i <= ((m + 1) / 2):
-        first_der_f.append(((-3) * f_points[i] + 4 * f_points[i + 1] - f_points[i + 2]) / (2 * h))
-    else:
-        first_der_f.append((3 * f_points[i] - 4 * f_points[i - 1] + f_points[i - 2]) / (2 * h))
+answer = 2
 
-second_der_f = []
-for i in range(1, m):
-    second_der_f.append((f_points[i + 1] - 2 * f_points[i] + f_points[i - 1]) / h ** 2)
+while answer not in [1, 0]:
+    print('If you want to continue, enter 1. Exit - 0:')
+    answer = int(input())
+    if answer == 1:
 
-for i in range (0, m + 1):
-    if i in [0, m]:
-        print('x_', i, ' = ', points[i], ', f(x_',i, ') = ', f_points[i], 'f\'(x_', i, ') = ', first_der_f[i],
-              ', |f\'(x_', i, ')_т - f\'(x_', i, ')_чд| = ', abs(f_der(points[i]) - first_der_f[i]), sep='')
-    else:
-        print('x_', i, ' = ', points[i], ', f(x_',i, ') = ', f_points[i], 'f\'(x_', i, ') = ', first_der_f[i],
-              ', |f\'(x_', i, ')_т - f\'(x_', i, ')_чд| = ', abs(f_der(points[i]) - first_der_f[i]),
-              ', f\"(x_',i, ') = ', second_der_f[i - 1], ', |f\"(x_', i, ')_т - f\"(x_', i,
-              ')_чд| = ', abs(s_der(points[i]) - second_der_f[i - 1]), sep='')
+        #Numerical differentiation
+        first_der_f = []
+        for i in range(0, m + 1):
+            if i == 0:
+                first_der_f.append(((-3) * f_points[i] + 4 * f_points[i + 1] - f_points[i + 2]) / (2 * h))
+            elif i == m:
+                first_der_f.append((3 * f_points[i] - 4 * f_points[i - 1] + f_points[i - 2]) / (2 * h))
+            else:
+                first_der_f.append((f_points[i + 1] - f_points[i - 1]) / (2 * h))
+
+        second_der_f = []
+        for i in range(1, m):
+            second_der_f.append((f_points[i + 1] - 2 * f_points[i] + f_points[i - 1]) / h ** 2)
+
+        print('{0:20} | {1:20} | {2:20} | {3:20} | {4:20} | {5:20}'.format('x', 'f(x)', 'f\'(x)_чд',
+                                                                           '|f\'_тз - f\'чд|', 'f\'\'(x)_чд',
+                                                                           '|f\'\'_тз - f\'\'_чд|'))
+        for i in range (0, m + 1):
+            if i in [0, m]:
+                print('{0:<20.15f} | {1:<20.15f} | {2:<20.15f} | {3:<20.15f}'.format(
+                    points[i], f_points[i], first_der_f[i],
+                    abs(f_der(points[i]) - first_der_f[i])))
+            else:
+                print('{0:<20.15f} | {1:<20.15f} | {2:<20.15f} | {3:<20.15f} | {4:<20.15f} | {5:<20.15f}'.format(
+                    points[i], f_points[i], first_der_f[i],
+                    abs(f_der(points[i]) - first_der_f[i]), second_der_f[i - 1], abs(s_der(points[i]) - second_der_f[i - 1])))
+
+    elif answer == 0:
+        break
