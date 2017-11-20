@@ -1,7 +1,5 @@
 import math
-from sympy import Integral, Symbol
 import scipy.integrate as ig
-from operator import itemgetter
 
 #1
 A = 0
