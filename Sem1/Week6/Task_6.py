@@ -89,8 +89,8 @@ while answer != 1:
 #3
 mu = []
 for i in range(0, 4):
-    g = lambda x: w(x) * x ** i
-    mu.append(q_formula(points, m, g))
+    p = lambda x: w(x) * x ** i
+    mu.append(q_formula(points, m, p))
     print('Mu_', i, ' = ', mu[i], sep='')
 
 a_coef = [mu[1], mu[0], mu[2], mu[1]]
