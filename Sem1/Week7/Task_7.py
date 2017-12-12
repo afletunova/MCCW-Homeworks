@@ -27,6 +27,7 @@ derivatives.append(- derivatives[10] + math.cos(x_0))
 # 1
 points = []
 y_x = []
+y_N_x = []
 
 for k in range(-2, N + 1):
     points.append(x_0 + k * h)
@@ -37,8 +38,11 @@ for k in range(-2, N + 1):
         print('{0:<20.15f} | {1:<20.15f}'.format(t, p))
 
 answer = 'yt'
+point = 0
 
 while answer != 'n':
+    if answer == 'n':
+        break
     while answer not in ('n', 'y'):
         print('If you ready to start, enter y. Else - n to exit: ')
         answer = input()
@@ -46,8 +50,10 @@ while answer != 'n':
     while choice not in (0, 1, 2, 3, 4, 5):
         print('Choose method: ')
         print('1 - The Taylor series expansion method;')
-        print('3 - The Runge-Kutta method;')
-        print('4 - The Eulers method;')
+        if point == 1:
+            print('2 - The Adams Method;')
+        print('3 - The Runge-Kutta Method;')
+        print('4 - The Eulers Method;')
         print('5 - The Improved Euler Method')
         print('6 - The Euler-Cauchy method')
         print('   or enter 0 to exit:')
@@ -57,8 +63,6 @@ while answer != 'n':
             break
         elif choice == 1:
         #2
-            y_N_x = []
-
             for i in range(0, 5):
                 y_N = y_0 + f(x_0, y_0) * (points[i] - x_0)
                 counter = 0
@@ -79,6 +83,34 @@ while answer != 'n':
             print('{0:20} | {1:20}'.format('x', '|y(x)-y_N(x)|'))
             for i, j, k in zip(points, y_x, y_N_x):
                 print('{0:<20.15f} | {1:<20.15f}'.format(i, abs(k[0] - j)))
+            point = 1
+
+        elif choice == 2:
+            fin_diff = [[0 for x in range(7)] for y in range(N + 3)]
+            for i in range(0, N + 1):
+                fin_diff[i][0] = points[i]
+            for i in range(0, 5):
+                fin_diff[i][1] = y_N_x[i][0]
+                fin_diff[i][2] = h * f(points[i], y_N_x[i][0])
+            for k in range(5, N + 3):
+                for i in range(3, 7):
+                    for j in range(0, k - i + 3):
+                        fin_diff[j][i] = fin_diff[j + 1][i - 1] - fin_diff[j][i - 1]
+                ta_1 = fin_diff[k - 1][1]
+                ta_2 = fin_diff[k - 1][2]
+                ta_3 = 1 / 2 * fin_diff[k - 2][3]
+                ta_4 = 5 / 12 * fin_diff[k - 3][4]
+                ta_5 = 3 / 8 * fin_diff[k - 4][5]
+                ta_6 = 251 / 720 * fin_diff[k - 5][6]
+                fin_diff[k][1] = ta_1 + ta_2 + ta_3 + ta_4 + ta_5 + ta_6
+                fin_diff[k][2] = h * f(fin_diff[k][0], fin_diff[k][1])
+
+            print('{0:20} | {1:20}'.format('x', 'y(x)'))
+            for i in range(0, N + 1):
+                print('{0:<20.15f} | {1:<20.15f}'.format(fin_diff[i][0], fin_diff[i][1]))
+
+            print('|y_N(x) - y(x)| =', abs(fin_diff[N][1] - y(points[N])))
+
 
         elif choice == 3:
         #5
@@ -100,7 +132,6 @@ while answer != 'n':
             for i, j in zip(points, y_points):
                 print('{0:<20.15f} | {1:<20.15f}'.format(i, j))
 
-            print('|y_N(x) - y(x)| =', abs(y_points[N] - y(points[N])))
         #6
         elif choice == 4:
 
