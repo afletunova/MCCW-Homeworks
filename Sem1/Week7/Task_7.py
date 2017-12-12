@@ -33,9 +33,9 @@ for k in range(-2, N + 1):
     points.append(x_0 + k * h)
     y_x.append(y(x_0 + k * h))
 
-    print('{0:20} | {1:20}'.format('x', 'y(x)'))
-    for t, p in zip(points, y_x):
-        print('{0:<20.15f} | {1:<20.15f}'.format(t, p))
+print('{0:20} | {1:20}'.format('x', 'y(x)'))
+for t, p in zip(points, y_x):
+    print('{0:<20.15f} | {1:<20.15f}'.format(t, p))
 
 answer = 'yt'
 point = 0
@@ -83,6 +83,7 @@ while answer != 'n':
             print('{0:20} | {1:20}'.format('x', '|y(x)-y_N(x)|'))
             for i, j, k in zip(points, y_x, y_N_x):
                 print('{0:<20.15f} | {1:<20.15f}'.format(i, abs(k[0] - j)))
+
             point = 1
 
         elif choice == 2:
@@ -131,6 +132,8 @@ while answer != 'n':
             print('{0:20} | {1:20}'.format('x', 'y_N(x)'))
             for i, j in zip(points, y_points):
                 print('{0:<20.15f} | {1:<20.15f}'.format(i, j))
+
+            print('|y_N(x) - y(x)| =', abs(y_points[N] - y(points[N])))
 
         #6
         elif choice == 4:
