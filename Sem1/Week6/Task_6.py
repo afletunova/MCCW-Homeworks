@@ -51,8 +51,8 @@ N = 2
 m = 100
 epsilon = 10 ** (-7)
 
-#f = lambda x: math.sin(x)
-f = lambda  x: x ** 2 + 7 * x
+f = lambda  x: math.sin(x)
+#f = lambda  x: x ** 2 + 7 * x
 
 
 w = lambda x: abs(x - 1 / 2)
