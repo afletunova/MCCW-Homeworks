@@ -67,7 +67,7 @@ while answer != 'n':
                 y_N = y_0 + f(x_0, y_0) * (points[i] - x_0)
                 counter = 0
                 values = []
-                for j in range(0, 12):
+                for j in range(0, 9):
                     if derivatives[j] / math.factorial(j + 2) * (points[i] - x_0) ** (j + 2) != 0:
                         counter += 1
                     y_N += derivatives[j] / math.factorial(j + 2) * (points[i] - x_0) ** (j + 2)
