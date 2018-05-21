@@ -113,22 +113,24 @@ def borders_Gersh(A):
 
     return m, M
 
-def odd_numbers(l):
+def odd_numbers(p):
     Q = []
-    for i in range(l):
+    l = 2 ** p
+
+    for i in range(p):
         Q.append([])
 
-    Q[0] = [1]
+    j = 1
+    Q[0] = [2, 1]
 
-    for i in range(1, l):
-        Q[i] = np.zeros(2 ** i)
+    for i in range(1, p):
+        Q[i] = np.zeros(2 ** (i + 1))
 
-        for j in range(2 ** (i - 1)):
-            Q[i][2 * j] = Q[i - 1][j]
-            Q[i][2 * j + 1] = 2 ** (i + 1) - Q[i][2 * j]
+        for j in range(2 ** i):
+            Q[i][j * 2] = 2 ** (i + 1) + 1 - Q[i - 1][j] ** i
+            Q[i][j * 2 + 1] = Q[i - 1][j] ** i
 
-    return Q[l // 4]
-
+    return Q[p - 1]
 
 A = Matrix([[2.20219, 0.33266, 0.16768, 2.17523],
             [0.33266, 3.17137, 0.54055, 6.58335],
@@ -231,7 +233,11 @@ while vector_norm(x_1 - x_0) > epsilon:
     print("A priori: ", apriori)
     aposteriori = (np.float32)((np.float32)(B_norm) / (np.float32)(1 - B_norm) * vector_norm(x_1 - x_0))
     print("A posteriori: ", aposteriori)
-    print("||x* - x ^", k_iter, "|| = ", vector_norm(x - x_1), sep='')
+    print("||x* - x^", k_iter, "|| = ", vector_norm(x - x_1), sep='')
+
+print('Solution: ')
+sp.pprint(x_1)
+print("||A*x - b|| = ", vector_norm(A_clear * x_1 - b), sep='')
 
 print("The iterative method required {0} iterations".format(k_iter))
 
@@ -245,7 +251,9 @@ k = (int)(1 / 2 * sqrt(pi / m) * log(2 / epsilon))
 p = ceil(log(k, 2))
 k = 2 ** p
 
-tetas = odd_numbers(k)
+print("A priori estimate of k: ", k)
+
+tetas = odd_numbers(p)
 
 t = cos(pi * tetas[0] / (2 * k))
 tao = (np.float32)(2 / (M + m - (M - m) * t))
@@ -264,7 +272,7 @@ print("A posteriori: ", aposteriori  * first_apr)
 print("||x* - x ^", 1, "|| = ", vector_norm(x - x_1), sep='')
 
 
-while vector_norm(x_1 - x_0) > epsilon:
+for i in range(1, k):
     x_0 = x_1.copy()
     k_iter += 1
     t = cos(pi * tetas[k_iter - 1] / (2 * k))
@@ -278,5 +286,9 @@ while vector_norm(x_1 - x_0) > epsilon:
     print("A posteriori: ", aposteriori)
     print("||x* - x^", k_iter, "|| = ", vector_norm(x - x_1), sep='')
 
+print("||A*x - b|| = ", vector_norm(A_clear * x_1 - b), sep='')
+
+print('Solution: ')
+sp.pprint(x_1)
 print("The iterative method with Chebyshev parameters required {0} iterations".format(k_iter))
 
